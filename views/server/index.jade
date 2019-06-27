@@ -2,7 +2,8 @@ extends layout
 
 block content
     .console
-        h3 你好，#{User.name}
+        h3(style="text-align:center") 每日正能量群管理
+        h4 你好，#{User.name} &nbsp;&nbsp;  本周值日群主: XXXX
         //- if(User && User.roles)
             each role in User.roles
                 ul.list-group
@@ -16,17 +17,17 @@ block content
                 .dashboard-tile.detail.tile-turquoise
                     .content
                         h1.text-left.timer(data-from='0', data-to='180', data-speed='2500') #{data.content}
-                        p 内容
+                        p 惩罚
                     .icon
                         i.fa.fa-folder
-        .col-md-3.col-sm-6
-            a(href="#{adminDir}/category/")
-                .dashboard-tile.detail.tile-red
-                    .content
-                        h1.text-left.timer(data-from='0', data-to='180', data-speed='2500') #{data.category}
-                        p 分类
-                    .icon
-                        i.fa.fa-sitemap
+        //- .col-md-3.col-sm-6
+        //-     a(href="#{adminDir}/category/")
+        //-         .dashboard-tile.detail.tile-red
+        //-             .content
+        //-                 h1.text-left.timer(data-from='0', data-to='180', data-speed='2500') #{data.category}
+        //-                 p 分类
+        //-             .icon
+        //-                 i.fa.fa-sitemap
         .col-md-3.col-sm-6
             a(href="#{adminDir}/comment/")
                 .dashboard-tile.detail.tile-blue
@@ -40,26 +41,26 @@ block content
                 .dashboard-tile.detail.tile-turquoise
                     .content
                         h1.text-left.timer(data-from='0', data-to='56', data-speed='2500') #{data.user}
-                        p 用户
+                        p 老表 
                     .icon
                         i.fa.fa-users
-        .col-md-3.col-sm-6
-            a(href="#{adminDir}/role/")
-                .dashboard-tile.detail.tile-blue
-                    .content
-                        h1.text-left.timer(data-from='0', data-to='32', data-speed='2500') #{data.role}
-                        p 角色
-                    .icon
-                        i.fa.fa.fa-key
+        //- .col-md-3.col-sm-6
+        //-     a(href="#{adminDir}/role/")
+        //-         .dashboard-tile.detail.tile-blue
+        //-             .content
+        //-                 h1.text-left.timer(data-from='0', data-to='32', data-speed='2500') #{data.role}
+        //-                 p 角色
+        //-             .icon
+        //-                 i.fa.fa.fa-key
 
-        .col-md-3.col-sm-6
-            a(href="#{adminDir}/file/")
-                .dashboard-tile.detail.tile-purple
-                    .content
-                        h1.text-left.timer(data-to='105', data-speed='2500') #{data.file}
-                        p 文件
-                    .icon
-                        i.fa.fa-file
+        //- .col-md-3.col-sm-6
+        //-     a(href="#{adminDir}/file/")
+        //-         .dashboard-tile.detail.tile-purple
+        //-             .content
+        //-                 h1.text-left.timer(data-to='105', data-speed='2500') #{data.file}
+        //-                 p 文件
+        //-             .icon
+        //-                 i.fa.fa-file
     
 
 block foot-js
