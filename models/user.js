@@ -13,14 +13,8 @@ let UserSchema = new Schema({
         unique: true
     },
 
-    mobile: {
-        type: String
-    },
 
     name: {
-        type: String
-    },
-    avatar: {
         type: String
     },
 
@@ -32,9 +26,13 @@ let UserSchema = new Schema({
     address: {
         type: String
     },
-    roles: {
+    roles: [{
         type: Schema.ObjectId,
         ref: 'Role'
+    }],
+    count: {
+        type: Number,
+        default: 0
     },
 
     created: {
@@ -43,6 +41,7 @@ let UserSchema = new Schema({
     },
     status: {
         type: Number,
+        default: 101
     },
 
     salt: String,
