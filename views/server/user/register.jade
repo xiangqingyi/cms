@@ -42,8 +42,14 @@ block content
                                 label(for='J_password') *密码
                                 input#J_password.form-control(type='password', name='password', placeholder='请输入密码')
                             .form-group
-                                label(for='J_email') *Email
-                                input#J_email.form-control(type='email', name='email', placeholder='请输入Email')
+                                label(for="J_name") *姓名
+                                input#J_name.form-control(type="text", name="name", placeholder="请输入姓名")
+                            .form-group
+                                label(for="J_address") *地址
+                                input#J_address.form-control(type="text", name="address", placeholder="请输入地址")
+                            .form-group
+                                label(for="J_birthday")
+                                input#J_birthday.form-control(type="date", name="birthday", placeholder="请输入生日")
                             input(type='hidden', name='_csrf', value='#{token}')
                             button.btn.btn-primary.btn-block(type='submit') 注册
 
