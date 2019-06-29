@@ -3,49 +3,50 @@
 let mongoose = require('mongoose')
 let Comment = mongoose.model('Comment')
 let util = require('../../lib/util')
+let _ = require('lodash');
 
-//列表
-exports.list = function (req, res) {
-  let condition = {};
-  const isAdmin = req.isAdmin;
-  if (!isAdmin) {
-    condition.author = req.session.user._id;
-  }
-  Comment.count(condition, function (err, total) {
-    let query = Comment.find(condition).populate('author').populate('from');
-    //分页
-    let pageInfo = util.createPage(req.query.page, total);
-    //console.log(pageInfo);
-    query.skip(pageInfo.start);
-    query.limit(pageInfo.pageSize);
-    query.sort({ created: -1 });
-    query.exec(function (err, results) {
-      //console.log(err, results);
-      res.render('server/comment/list', {
-        //title: '列表',
-        comments: results,
-        pageInfo: pageInfo
-      });
+// 反馈列表
+exports.list = async (req, res) => {
+  console.log('获取反馈列表');
+  try {
+    let counts = await Comment.count({}).exec();
+    let pageInfo = util.createPage(req.query.page, counts)
+    let comments = await Comment.find({}).populate('author').skip(pageInfo.start).limit(pageInfo.pageSize).sort({created: -1});
+    return res.render('server/comment/list', {
+      comments: comments,
+      pageInfo: pageInfo
     })
-  })
+  } catch (error) {
+    console.log(error);
+    return res.render('server/info', {
+      message: '获取反馈列表失败'
+    })
+  }
+};
 
-};
-//单条
-exports.one = function (req, res) {
-  let id = req.params.id;
-  Comment.findById(id).populate('author', 'username name email').populate('from').exec(function (err, result) {
-    console.log(result);
-    if (!result) {
-      return res.render('server/info', {
-        message: '该评论不存在'
-      });
-    }
-    res.render('server/comment/item', {
-      title: result.name,
-      comment: result
+
+// 增加反馈
+exports.add = async (req, res) => {
+  console.log('增加反馈');
+  if (req.method === 'GET') {
+    return res.render('server/comment/add', {
+      Menu: 'add',
+    })
+  } else if (req.method === 'POST') {
+    let obj = _.pick(req.body, 'content')
+    let comment = await Comment({
+      ...obj,
+      author: req.session.user._id
     });
-  });
-};
+    await comment.save();
+    return res.json({
+      status: 1,
+      message: "创建反馈成功"
+    })
+  }
+}
+
+
 //删除
 exports.del = function (req, res) {
   let id = req.params.id;
