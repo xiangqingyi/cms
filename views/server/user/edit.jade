@@ -12,12 +12,10 @@ block content
                     input.form-control(name='name', value='#{user.name}')
                 .form-group
                     label 地址
-                    input.form-control(type="text", value='#{user.address}')
+                    input.form-control(name="address", type="text", value='#{user.address}')
                 .form-group
-                    labe 生日
-                    //- input.form-control(type="date", value='#{moment(user.birthday}')
-                    input.form-control(type="text", value='#{user.birthday}')
-                    //- input.form-control(type="text", value='#{moment(user.birthday).format('Y
+                    label 生日
+                    input.form-control(name="birthday", type="date", value='#{birthday}')
                 input(type='hidden', name='_csrf', value='#{token}')
                 button.btn.btn-primary(type='submit') 提交
 

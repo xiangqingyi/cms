@@ -12,19 +12,21 @@ block content
                             th 姓名
                             th 地址
                             th 生日
-                            th 犯错次数
+                            th 次数
+                            th 金额
                             th 操作
                     tbody
                         - each user in users
                             tr
                                 td 
-                                    a(href='#{adminDir}/user/#{user.id}', title='#{user.email}') #{user.username}
+                                    a(href='#{adminDir}/user/#{user._id}', title='#{user.email}') #{user.username}
                                 td #{user.name}
                                 td #{user.address}
                                 td #{moment(user.birthday).format('YYYY-MM-DD')}
                                 td #{user.count}
+                                td #{user.fined}
                                 td 
-                                    a.btn.btn-default.btn-xs(href='#{adminDir}/user/#{user.id}/edit') 编辑
+                                    a.btn.btn-default.btn-xs(href='#{adminDir}/user/#{user._id}/edit') 编辑
                 if (pageInfo && pageInfo.totalPage > 1)
                     - pageInfo.query = query
                     include ../mixin
