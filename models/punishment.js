@@ -5,6 +5,10 @@ let Schema = mongoose.Schema;
 
 // 惩罚模型
 let PunishmentSchema = new Schema({
+    mistakeuser: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
     reason: { // 惩罚原因
         type: String,
         required: true
@@ -28,4 +32,4 @@ let PunishmentSchema = new Schema({
     
 })
 
-module.exports = mongoose.model('Punishment', PunishmentSchema);
+mongoose.model('Punishment', PunishmentSchema);
