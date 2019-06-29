@@ -12,6 +12,7 @@ let Mailer = require('../../lib/mailer')
 let _ = require('lodash');
 let mailer = new Mailer();
 const notify = require('../../notify');
+let moment = require('moment');
 
 /*let userService = require('../../services/user')
 userService.findById('53b6ca419dfe0cf41ccbaf96', ['roles', 'author']).then(function(res) {
@@ -242,6 +243,7 @@ exports.add = function (req, res) {
       obj.roles = [role._id];
       let user = new User(obj);
       user.save(function (err, result) {
+        console.log(req.xhr);
         if (req.xhr) {
           return res.json({
             status: !err
@@ -262,117 +264,52 @@ exports.add = function (req, res) {
 };
 
 //编辑
-exports.edit = function (req, res) {
+exports.edit = async (req, res) => {
   let id = req.params.id;
-  let editHandler = function (user) {
-    user.save(function (err, user) {
-      if (req.xhr) {
-        return res.json({
-          status: !err
-        })
-      }
-      if (err || !user) {
-        console.log(err);
-        return res.render('server/info', {
-          message: '更新失败'
-        });
-      }
-      if (id === req.session.user._id) {
-        req.session.user = user;
-        res.locals.User = user;
-      }
-      res.render('server/info', {
-        message: '更新成功'
-      });
-    })
-  };
   if (req.method === 'GET') {
-    User.findById(id).populate('author').exec(function (err, result) {
-      if (err || !result) {
-        return res.render('server/info', {
-          message: '出错了'
-        });
-      }
-      let isAdmin = req.isAdmin;
-      let isAuthor = result.author && ((result.author._id + '') === req.session.user._id);
-
-      if (!isAdmin && !isAuthor) {
-        return res.render('server/info', {
-          message: '没有权限'
-        });
-      }
-      try {
-        let condition = {};
-        const isAdmin = req.isAdmin;
-        if (!isAdmin) {
-          condition.author = req.session.user._id;
-        }
-        Role.find(condition, function (err, results) {
-          if (!err && results) {
-            res.render('server/user/edit', {
-              user: result,
-              roles: results
-            });
-          }
-        })
-      } catch (e) {
-        res.render('server/user/edit', {
-          user: result
-        });
-      }
-    })
+    try {
+      let user = await User.findById(id).exec();
+      let roles = await Role.find({}).exec();
+      
+      console.log(user);      
+      return res.render('server/user/edit', {
+        // user: {...user, birthday: moment(user.birthday).format('YYYY-MM-DD')},
+        user: user,
+        birthday: moment(user.birthday).format('YYYY-MM-DD'),
+        roles: roles
+      })
+    } catch (error) {
+      console.log(error)
+      return res.render('server/info',{
+        message: '服务器出错了'
+      })
+    }
   } else if (req.method === 'POST') {
-    //let obj = req.body;
-    let obj = _.pick(req.body, 'username', 'email', 'mobile', 'name', 'avatar', 'gender', 'birthday', 'description', 'address', 'position', 'questions', 'roles');
-    //判断是否允许编辑
-    User.findById(id).populate('roles').populate('author').exec(function (err, user) {
-      let isAdmin = req.isAdmin;
-      let isAuthor = user.author && ((user.author._id + '') === req.session.user._id);
-      let isMine = (user._id + '') === (req.user._id + '')
-      // 校验是否有分配角色权限 roles 值为id
-      const roles = req.Roles;
-      const inputRoles = _.difference(obj.roles, roles);
-      const overAuth = inputRoles.length > 0;
-
-      if (!isAdmin && !isAuthor && !isMine) {
-        return res.render('server/info', {
-          message: '没有权限'
-        });
-      }
-      if (!isAdmin && overAuth) {
-        return res.render('server/info', {
-          message: '权限不足'
-        });
-      }
-      let query;
-      if (typeof obj.roles === 'string') {
-        query = Role.find({ _id: obj.roles });
-      } else if (typeof obj.roles === 'object') {
-        query = Role.find({ _id: { $in: obj.roles } })
-      }
-      if (!query) {
-        return res.render('server/info', {
-          message: '请至少选择一个角色'
-        });
-      }
-      query.exec(function (err, roles) {
-        //系统默认管理员
-        if (user.status === 101) {
-          // TODO: 验证
-          let statuses = _.map(roles, 'status');
-          if (statuses.indexOf(201) === -1) {
-            return res.render('server/info', {
-              message: '系统管理员角色不正确'
-            });
-          }
-        }
-        obj.roles = roles;
-        _.assign(user, obj);
-        editHandler(user);
-      });
-    });
+    console.log('更新用户')
+    try {
+      let obj = _.pick(req.body, 'username', 'name', 'address', 'birthday')
+      console.log(obj);
+      console.log(req.body);
+      await User.update({_id: id}, {$set:{
+        username: obj.username,
+        name: obj.name,
+        address: obj.address,
+        birthday: obj.birthday
+      }})
+      return res.json({
+        status: 1,
+        message: "更新成功"
+      })
+    } catch (error) {
+      console.log(error);
+      return res.render('server/info', {
+        message: '更新用户失败'
+      })
+    }
   }
-};
+}
+
+
 
 //删除
 exports.del = function (req, res) {
