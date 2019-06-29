@@ -5,13 +5,20 @@ block content
             form(action='', method='post')
                 .form-group
                     label 值日生
-                    input.form-control(name='title', value='#{content.title}',disabled=true)
+                    input.form-control(name='duty', value='#{punishment.duty.name}',disabled=true)
+                .form-group
+                    label 惩罚老表
+                    select.form-control.input-sm(name='mistakeuser')
+                       option(value="") #{punishment.mistakeuser.name}
+                       - each user in users
+                          option(value="#{user._id}")
+                              | #{user.name}
                 .form-group 
                     label 惩罚金额
-                    input.form-control(name="fined", value='#{content.title}')
+                    input.form-control(name="fined", type="number", value='#{punishment.fined}')
                 .form-group
                     label 惩罚原因
-                    textarea.form-control#J_editor(name='content', rows='20', style='background-color: #fff; border: none;') #{content.content}
+                    textarea.form-control#J_editor(name='reason', rows='20', style='background-color: #fff; border: none;') #{punishment.reason}
                 input(type='hidden', name='_csrf', value='#{token}')
                 button.btn.btn-primary(type='submit') 提交
     script#J_tmpl_gallery_item(type='x-tmpl-mustache')

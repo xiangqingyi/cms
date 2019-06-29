@@ -22,10 +22,10 @@ router.route('/').get(punishment.list);
 router.route('/add').all(punishment.add);
 
 // 单条惩罚
-router.route('/:id').get(punishment.one);
+// router.route('/:id').get(punishment.one);
 
-// 删除惩罚
-router.route('/:id/del').post(punishment.del);
+// 编辑惩罚
+router.route('/:id/edit').all(punishment.edit);
 
 
 

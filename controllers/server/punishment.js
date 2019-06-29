@@ -48,6 +48,29 @@ exports.one = async (req, res) => {
     }
 }
 
+// 编辑惩罚
+exports.edit = async (req, res) => {
+    if (req.method === 'GET') {
+        try {
+            let id = req.params.id;
+            let users = await User.find({}).exec();
+            let result = await Punishment.findById(id).populate('mistakeuser').populate('duty').exec();
+            return res.render('server/punishment/edit', {
+                punishment: result,
+                users: users  
+            })
+        } catch (error) {
+            console.log(error);
+            return res.render('server/info', {
+                message:'获取punishment错误'
+            })
+        }
+    } else if(req.method === 'POST'){
+        // let obj = _.pick(req.body, )
+    }
+
+}
+
 // 删除惩罚
 exports.del = async (req, res) => {
     let id = req.params.id;
