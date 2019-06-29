@@ -85,6 +85,8 @@ exports.add = async (req, res) => {
             duty: duty._id
         });
         await punishment.save();
+        // 更新用户犯错次数
+        await User.update({_id: obj.mistakeuser}, {$inc:{count: 1, fined: Number(obj.fined)}})
         return res.json({
             status: 1,
             message: "创建惩罚成功"
