@@ -1,0 +1,67 @@
+extends ../layout
+block content
+    .row
+        .col-md-12
+            form(action='', method='post')
+
+                .form-group
+                    label 反馈内容
+                    textarea.form-control(name='content', rows='20', style='background-color: #fff; border: none;')
+                input(type='hidden', name='_csrf', value='#{token}')
+                button.btn.btn-primary(type='submit') 提交
+    script#J_tmpl_gallery_item(type='x-tmpl-mustache')
+        .gallery-item
+            img.gallery-image(src='{{url}}')
+            input(type='hidden', name='gallery[]', value='{{id}}')
+            a.gallery-remove.J_del(href='')
+                span.fa.fa-times-circle
+
+block foot-js
+
+    script(src='//cdn.jsdelivr.net/jquery.fileupload/9.9.0/js/vendor/jquery.ui.widget.js')
+    script.
+        Messenger.options = {
+            extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+            theme: 'flat'
+        };
+        $(function () {
+            var messenger;
+            $('form').ajaxForm({
+                beforeSerialize: function() {
+                    console.log('beforeSerialize')
+                },
+                beforeSubmit: function() {
+                    console.log('beforeSubmit')
+                    messenger = Messenger().post("处理中...");
+                },
+                success: function(data, status, xhr, $form) {
+                    console.log(data)
+                    var status = data.status;
+                    if (status) {
+                        messenger.update({
+                            message: '发布成功',
+                            hideAfter: 3,
+                            type: 'success'
+                        });
+                        $form[0].reset();
+                        mditor.editor.value = ''
+                        $('#J_gallery').empty();
+                    } else {
+                        messenger.update({
+                            message: '发布失败',
+                            hideAfter: 3,
+                            type: 'success'
+                        });
+                    }
+                },
+                err: function() {
+                    console.log('error')
+                    messenger.update({
+                        message: '系统繁忙',
+                        hideAfter: 3,
+                        type: 'success'
+                    });
+                }
+            })
+        });
+
