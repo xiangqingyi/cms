@@ -11,34 +11,19 @@ let Schema = mongoose.Schema
  */
 let LogSchema = new Schema({
   type: {
-    type: String
+    type: String   // || 惩罚
   },
-  action: {
-    type: String
-  },
+  
   name: {
     type: String
   },
-  qs: {
-    type: String
-  },
-  arg1: {
-    type: String
-  },
-  arg2: {
-    type: String
-  },
-  arg3: {
-    type: String
-  },
+
   status: {
     type: String
   },
-  ip: {
-    type: String
-  },
-  ua: {
-    type: String
+ 
+  total: {
+    type: Number,
   },
   message: {
     type: String

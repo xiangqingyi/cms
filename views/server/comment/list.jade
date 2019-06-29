@@ -3,34 +3,24 @@ extends ../layout
 block content
     .row
         .col-md-12
+            a.btn.btn-info(href='#{adminDir}/comment/add') 添加反馈
             table.table.table-striped
                 thead
                     tr
                         th 内容
-                        th 作者
-                        th 来自
-                        th IP
+                        th 老表
                         th 时间
-                        th 操作
                 tbody
                     - each comment in comments
                         tr
                             td
-                                a(href='#{adminDir}/comment/#{comment.id}') #{comment.content}
+                                | #{comment.content}
                             td
-                                if (comment.author)
-                                    | #{comment.author.name}
-                                else
-                                    | 匿名
-                            td
-                                if comment.from
-                                    a(href='/content/#{comment.from._id}##{comment.id}', target='_blank') #{comment.from.title} 
-                                        i.fa.fa-external-link
-                            td #{comment.ip}
+                                | #{comment.author.name}
                             td
                                 | #{moment(comment.created).format('LLL')}
                             td
-                                a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/comment/#{comment.id}/del') 删除
+                                //- a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/comment/#{comment.id}/del') 删除
             if (pageInfo && pageInfo.totalPage > 1)
                 - pageInfo.query = query
                 include ../mixin

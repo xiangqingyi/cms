@@ -5,6 +5,7 @@ let User = mongoose.model('User')
 let Content = mongoose.model('Content')
 let Category = mongoose.model('Category')
 let Comment = mongoose.model('Comment')
+let Punishment = mongoose.model('Punishment');
 let File = mongoose.model('File')
 let Role = mongoose.model('Role')
 let userController = require('./user')
@@ -12,11 +13,12 @@ let config = require('../../config')
 let util = require('../../lib/util')
 
 //后台首页
-exports.index = function (req, res) {
+exports.index = async function (req, res) {
   if (!req.session.user) {
     let path = util.translateAdminDir('/user/login');
     return res.redirect(path);
   }
+  let duty = await User.findOne({isduty: true});
   let obj = {}
   let filter = {};
   const isAdmin = req.isAdmin;
@@ -29,18 +31,21 @@ exports.index = function (req, res) {
     Comment.find(filter).count().exec(),
     User.find(filter).count().exec(),
     Role.find(filter).count().exec(),
-    File.find(filter).count().exec()
+    File.find(filter).count().exec(),
+    Punishment.find(filter).count().exec()
   ]).then((result) => {
-    //console.log(result)
+    console.log(result)
     res.render('server/index', {
-      title: '管理后台',
+      title: '每日正能量',
       data: {
         content: result[0],
         category: result[1],
         comment: result[2],
         user: result[3],
         role: result[4],
-        file: result[5]
+        file: result[5],
+        punishment: result[6],
+        duty: duty
       }
     });
   }).catch((e) => {

@@ -16,10 +16,11 @@ router.use(function (req, res, next) {
   }
   next();
 });
-//内容列表
+//反馈列表
 router.route('/').get(action.checkAction('COMMENT_INDEX'), comment.list);
-//单条信息
-router.route('/:id').get(action.checkAction('COMMENT_DETAIL'), comment.one);
+// 添加反馈
+router.route('/add').all(comment.add);
+
 //删除信息
 router.route('/:id/del').post(action.checkAction('COMMENT_DELETE'), comment.del);
 

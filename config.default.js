@@ -23,7 +23,7 @@ let config = {
   jwt: {
     secret: 'JWTSecret',
     options: {
-      expiresIn: '10h'
+      expiresIn: 60 * 60 * 24    // 过期时间为一天
     }
   },
   title: 'CMS',

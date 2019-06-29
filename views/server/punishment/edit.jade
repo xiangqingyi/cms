@@ -1,33 +1,39 @@
 extends ../layout
-
 block content
     .row
         .col-md-12
             form(action='', method='post')
                 .form-group
-                    label 用户名
-                    input.form-control(name='username', value='#{user.username}')
+                    label 值日生
+                    input.form-control(name='title', value='#{content.title}',disabled=true)
+                .form-group 
+                    label 惩罚金额
+                    input.form-control(name="fined", value='#{content.title}')
                 .form-group
-                    label 姓名
-                    input.form-control(name='name', value='#{user.name}')
-                .form-group
-                    label 地址
-                    input.form-control(type="text", value='#{user.address}')
-                .form-group
-                    labe 生日
-                    //- input.form-control(type="date", value='#{moment(user.birthday}')
-                    input.form-control(type="text", value='#{user.birthday}')
-                    //- input.form-control(type="text", value='#{moment(user.birthday).format('Y
+                    label 惩罚原因
+                    textarea.form-control#J_editor(name='content', rows='20', style='background-color: #fff; border: none;') #{content.content}
                 input(type='hidden', name='_csrf', value='#{token}')
                 button.btn.btn-primary(type='submit') 提交
+    script#J_tmpl_gallery_item(type='x-tmpl-mustache')
+        .gallery-item
+            img.gallery-image(src='{{url}}')
+            input(type='hidden', name='gallery[]', value='{{id}}')
+            a.gallery-remove.J_del(href='')
+                span.fa.fa-times-circle
+
 
 block foot-js
+    script(src='//cdn.jsdelivr.net/jquery.fileupload/9.9.0/js/vendor/jquery.ui.widget.js')
+    script(src='//cdn.jsdelivr.net/load-image/1.11.1/js/load-image.min.js')
+
     script.
         Messenger.options = {
             extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
             theme: 'flat'
         };
-        $(function() {
+        
+        $(function () {
+
             var messenger;
             $('form').ajaxForm({
                 beforeSerialize: function() {
@@ -50,7 +56,7 @@ block foot-js
                         messenger.update({
                             message: '更新失败',
                             hideAfter: 3,
-                            type: 'success'
+                            type: 'error'
                         });
                     }
                 },
@@ -59,8 +65,8 @@ block foot-js
                     messenger.update({
                         message: '系统繁忙',
                         hideAfter: 3,
-                        type: 'success'
+                        type: 'error'
                     });
                 }
             })
-        })
+        });

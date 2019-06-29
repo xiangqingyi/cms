@@ -140,7 +140,7 @@ exports.register = function (req, res) {
   if (method === 'GET') {
     res.render('server/user/register', {});
   } else if (method === 'POST') {
-    let obj = _.pick(req.body, 'username', 'password', 'email', 'mobile', 'name', 'avatar', 'gender', 'birthday', 'description', 'address', 'position', 'questions');
+    let obj = _.pick(req.body, 'username', 'password', 'email', 'name', 'birthday', 'address');
     obj.reg_ip = ip;
     // console.log(obj);
     notify.sendMessage(`用户注册 ${obj.username}`);
@@ -221,7 +221,7 @@ exports.register = function (req, res) {
 
   }
 };
-//添加
+// 手动添加用户
 exports.add = function (req, res) {
   let method = req.method;
   if (method === 'GET') {
@@ -230,23 +230,18 @@ exports.add = function (req, res) {
     });
   } else if (method === 'POST') {
     //let obj = req.body;
-    let obj = _.pick(req.body, 'username', 'password', 'email', 'mobile', 'name', 'avatar', 'gender', 'birthday', 'description', 'address', 'position', 'questions');
+    let obj = _.pick(req.body, 'username', 'password', 'name', 'birthday', 'address');
     console.log(obj);
-    //默认角色
-    Role.findOne({ status: 202 }, function (err, role) {
-      console.log('role', role);
+    //默认角色 默认添加管理员的角色
+    Role.findOne({ status: 201 }, function (err, role) {
       if (err || !role) {
         return res.render('server/info', {
           message: '添加失败, 未开放角色:' + config.admin.role.user
         });
       }
       obj.roles = [role._id];
-      if (req.session.user) {
-        obj.author = req.session.user._id;
-      }
       let user = new User(obj);
       user.save(function (err, result) {
-        console.log(result);
         if (req.xhr) {
           return res.json({
             status: !err
