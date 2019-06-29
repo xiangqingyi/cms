@@ -5,7 +5,7 @@ block content
         .col-md-6
             .panel.panel-default
                 .panel-heading
-                    h3.panel-title 添加用户
+                    h3.panel-title 添加老表
                 .panel-body
                     form.form-horizontal(role='form', action='', method='post')
                         .form-group
@@ -21,9 +21,13 @@ block content
                             .col-sm-10
                                 input#inputPassword4.form-control(type='text', name='name', placeholder='姓名')
                         .form-group
-                            label.col-sm-2.control-label(for='inputPassword5') Email
+                            label.col-sm-2.control-label(for='inputPassword5') 生日
                             .col-sm-10
-                                input#inputPassword5.form-control(type='email', name='email', placeholder='Email')
+                                input#inputPassword5.form-control(type='date', name='birthday', placeholder='生日')
+                        .form-group
+                            label.col-sm-2.control-label(for='inputPassword6') 地址
+                            .col-sm-10
+                                input#inputPassword6.form-control(type="text", name="address", placeholder='地址')
                         input(type='hidden', name='_csrf', value='#{token}')
                         .form-group
                             .col-sm-offset-2.col-sm-10

@@ -4,15 +4,15 @@ block content
     .row
         .col-md-12
             .lists
-                a.btn.btn-info(href='#{adminDir}/user/add') 添加用户
+                a.btn.btn-info(href='#{adminDir}/user/add') 添加老表
                 table.table.table-striped
                     thead
                         tr
                             th 用户名 
                             th 姓名
-                            th 角色
-                            th 创建人
-                            th 创建日期
+                            th 地址
+                            th 生日
+                            th 犯错次数
                             th 操作
                     tbody
                         - each user in users
@@ -20,23 +20,11 @@ block content
                                 td 
                                     a(href='#{adminDir}/user/#{user.id}', title='#{user.email}') #{user.username}
                                 td #{user.name}
-                                td
-                                    if (user.roles)
-                                        - each role in user.roles
-                                            span.label.label-info
-                                                | #{role.name}
-                                            | 
-                                td
-                                    if (user.author)
-                                        | #{user.author.username}
-                                    else
-                                        | 无
-                                td #{moment(user.created).format('LLL')}
+                                td #{user.address}
+                                td #{moment(user.birthday).format('YYYY-MM-DD')}
+                                td #{user.count}
                                 td 
                                     a.btn.btn-default.btn-xs(href='#{adminDir}/user/#{user.id}/edit') 编辑
-                                    |  
-                                    if (user.status !== 101)
-                                        a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/user/#{user.id}/del') 删除
                 if (pageInfo && pageInfo.totalPage > 1)
                     - pageInfo.query = query
                     include ../mixin

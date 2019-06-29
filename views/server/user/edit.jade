@@ -11,18 +11,13 @@ block content
                     label 姓名
                     input.form-control(name='name', value='#{user.name}')
                 .form-group
-                    label Email
-                    input.form-control(name='email', value='#{user.email}')
+                    label 地址
+                    input.form-control(type="text", value='#{user.address}')
                 .form-group
-                    label 角色
-                    select.form-control.input-sm(multiple, name='roles')
-                        - each role in roles
-                            if (user.roles.indexOf(role.id) > -1)
-                                option(value='#{role.id}', selected)
-                                    | #{role.name}
-                            else
-                                option(value='#{role.id}')
-                                    | #{role.name}
+                    labe 生日
+                    //- input.form-control(type="date", value='#{moment(user.birthday}')
+                    input.form-control(type="text", value='#{user.birthday}')
+                    //- input.form-control(type="text", value='#{moment(user.birthday).format('Y
                 input(type='hidden', name='_csrf', value='#{token}')
                 button.btn.btn-primary(type='submit') 提交
 
