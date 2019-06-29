@@ -102,9 +102,9 @@ app.use(function (req, res, next) {
 });
 
 //路由控制
-util.walk(appPath + '/routes/app', 'middlewares', function (path) {
-  require(path)(app);
-});
+// util.walk(appPath + '/routes/app', 'middlewares', function (path) {
+//   require(path)(app);
+// });
 util.walk(appPath + '/routes/server', 'middlewares', function (path) {
   require(path)(app);
 });
