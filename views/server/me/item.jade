@@ -36,51 +36,9 @@ block content
                     li.list-group-item
                         .row
                             .col-md-2
-                                strong Email
-                            .col-md-10
-                                | #{user.email}
-                    li.list-group-item
-                        .row
-                            .col-md-2
-                                strong 手机号
-                            .col-md-10
-                                | #{user.mobile}
-                    li.list-group-item
-                        .row
-                            .col-md-2
                                 strong 生日
                             .col-md-10
                                 | #{moment(user.birthday || '').format('YYYY年MM月DD日')}
-                    li.list-group-item
-                        .row
-                            .col-md-2
-                                strong 性别
-                            .col-md-10
-                                | #{user.gender}
-                    li.list-group-item
-                        .row
-                            .col-md-2
-                                strong 角色
-                            .col-md-10
-                                | #{user._roles}
-                    li.list-group-item
-                        .row
-                            .col-md-2
-                                strong 权限
-                            .col-md-10
-                                - each action in ACTIONS
-                                        | #{action.name}
-                                        ul
-                                            - each item in action.actions
-                                                li 
-                                                    label
-                                                        | #{item.name} (#{item.description})
-                    li.list-group-item
-                        .row
-                            .col-md-2
-                                strong 注册日期
-                            .col-md-10
-                                | #{moment(user.created).format('LLL')}
     .row
         .col-md-12
             .panel.panel-danger
