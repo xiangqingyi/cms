@@ -43,7 +43,13 @@ let UserSchema = new Schema({
         type: Number,
         default: 101
     },
-
+    isduty: {
+      type: Boolean,
+      default: false,
+    },
+    id: {
+      type: Number,
+    },
     salt: String,
     hashed_password: String
 
