@@ -76,6 +76,9 @@ exports.del = async (req, res) => {
     console.log('删除惩罚')
     let id = req.params.id;
     try {
+        let punishment = await Punishment.findById(id).populate('mistakeuser');
+        await User.update({_id: punishment.mistakeuser._id}, {$inc:{count: -1, fined: -Number(punishment.fined)}});
+
         await Punishment.remove({_id: id});
         return res.json({
             status: 1,
