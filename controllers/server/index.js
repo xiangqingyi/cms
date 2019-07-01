@@ -10,7 +10,8 @@ let File = mongoose.model('File')
 let Role = mongoose.model('Role')
 let userController = require('./user')
 let config = require('../../config')
-let util = require('../../lib/util')
+let util = require('../../lib/util');
+let _ = require('lodash');
 
 //后台首页
 exports.index = async function (req, res) {
@@ -25,6 +26,10 @@ exports.index = async function (req, res) {
   if (!isAdmin) {
     filter = { author: req.session.user._id };
   }
+  let users = await User.find({}).exec();
+  let all = _.sumBy(users, 'fined');
+  // console.log(all)
+
   Promise.all([
     Content.find(filter).count().exec(),
     Category.find(filter).count().exec(),
@@ -45,7 +50,8 @@ exports.index = async function (req, res) {
         role: result[4],
         file: result[5],
         punishment: result[6],
-        duty: duty
+        duty: duty,
+        all: all
       }
     });
   }).catch((e) => {

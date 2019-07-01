@@ -3,32 +3,25 @@
 let mongoose = require('mongoose')
 let Log = mongoose.model('Log')
 let util = require('../../lib/util')
+let User = mongoose.model('User');
+let _ = require('lodash');
 
 //列表
-exports.list = function (req, res) {
-  let condition = {};
-  const isAdmin = req.isAdmin;
-  if (!isAdmin) {
-    condition.author = req.session.user._id;
-  }
-  Log.count(condition, function (err, total) {
-    let query = Log.find(condition);
-    //分页
-    let pageInfo = util.createPage(req.query.page, total);
-    //console.log(pageInfo);
-    query.skip(pageInfo.start);
-    query.limit(pageInfo.pageSize);
-    query.sort({ created: -1 });
-    query.exec(function (err, results) {
-      //console.log(err, results);
-      res.render('server/log/list', {
-        //title: '列表',
-        data: results,
-        pageInfo: pageInfo
-      });
+exports.list = async (req, res) => {
+  // 获取所有经费
+  try {
+    let users = await User.find({}, {_id: 0, fined: 1});
+    let all = _.sumBy(users, 'fined');
+    return res.render('server/log/list', {
+      all: all
     })
-  })
-};
+  } catch (error) {
+    console.log(error);
+    return res.render('server/info', {
+      message: '获取所有经费失败'
+    })
+  }
+}
 
 //单条
 exports.one = function (req, res) {

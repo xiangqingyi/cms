@@ -7,7 +7,7 @@ let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
 /**
- * 标签模型
+ * 日志模型
  */
 let LogSchema = new Schema({
   type: {
