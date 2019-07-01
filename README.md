@@ -1,4 +1,9 @@
-# CMS
+# 目的（纯属娱乐）
+每日正能量群管理系统，
+管理群成员，管理惩罚列表，管理经费列表
+以后说不定还会增加需求
+
+# Manager
 
 > coding in process with no guaranteed stability
 
