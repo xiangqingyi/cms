@@ -31,9 +31,9 @@ block content
                             td
                                 | #{moment(punishment.created).format('LLL')}
                             td
-                                a.btn.btn-default.btn-xs(href='#{adminDir}/punishment/#{punishment.id}/edit') 编辑
+                                //- a.btn.btn-default.btn-xs(href='#{adminDir}/punishment/#{punishment.id}/edit') 编辑
                                 | &nbsp;
-                                //- a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/punishment/#{punishment.id}/del') 删除
+                                a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/punishment/#{punishment.id}/del') 删除
             
             if (pageInfo && pageInfo.totalPage > 1)
                 - pageInfo.query = query

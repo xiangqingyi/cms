@@ -27,6 +27,9 @@ router.route('/add').all(punishment.add);
 // 编辑惩罚
 router.route('/:id/edit').all(punishment.edit);
 
+// 删除惩罚
+router.route('/:id/del').post(punishment.del);
+
 
 
 

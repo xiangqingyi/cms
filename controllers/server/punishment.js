@@ -73,12 +73,15 @@ exports.edit = async (req, res) => {
 
 // 删除惩罚
 exports.del = async (req, res) => {
+    console.log('删除惩罚')
     let id = req.params.id;
     try {
-        await Punishment.remove({_id: id})
-        return res.render('server/info', {
-            message: "删除成功"
-        })
+        await Punishment.remove({_id: id});
+        return res.json({
+            status: 1,
+            message: '删除成功'
+        });
+ 
     } catch (error) {
         console.log(error);
         return res.render('server/info', {
