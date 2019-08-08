@@ -27,7 +27,9 @@ exports.index = async function (req, res) {
     filter = { author: req.session.user._id };
   }
   let users = await User.find({}).exec();
-  let all = _.sumBy(users, 'fined');
+  let punishmentall = _.sumBy(users, 'fined');
+  let awardall = _.sumBy(users, 'award');
+  let all = punishmentall - awardall;
   // console.log(all)
 
   Promise.all([
