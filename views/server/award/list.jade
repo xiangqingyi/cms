@@ -1,0 +1,80 @@
+extends ../layout
+
+block content
+    .row
+        .col-md-12
+            a.btn.btn-info(href='#{adminDir}/award/add') 添加奖励
+            table.table.table-striped
+                thead
+                    tr
+                        th 奖励老表
+                        th 奖励原因
+                        th 奖励金额
+                        th 值日生
+                        th 发布时间
+                        th 操作
+                tbody
+                    - each award in awards
+                        tr
+                            td
+                                | #{award.awarduser.name}
+                            //- td
+                            //-     a(href='/award/#{award.id}', target='_blank') #{award.mistakeuser.name}
+                            //-         | 
+                            //-         i.fa.fa-external-link
+                            td
+                                | #{award.reason}
+                            td
+                                | #{award.award}元
+                            td
+                                | #{award.duty.name}
+                            td
+                                | #{moment(award.created).format('LLL')}
+                            td
+                                //- a.btn.btn-default.btn-xs(href='#{adminDir}/award/#{award.id}/edit') 编辑
+                                | &nbsp;
+                                a.btn.btn-danger.btn-xs.J_del(href='#{adminDir}/award/#{award.id}/del') 删除
+            
+            if (pageInfo && pageInfo.totalPage > 1)
+                - pageInfo.query = query
+                include ../mixin
+                +pagination(pageInfo)
+
+
+block foot-js
+    script.
+        var token = '#{token}';
+        Messenger.options = {
+            extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+            theme: 'flat'
+        };
+        
+        $(function() {
+            $(document).on('click', '.J_del', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                var url = $this.attr('href');
+                var messenger = Messenger().post("处理中...");
+                $.post(url, {_csrf: token}, function(res) {
+                    console.log(res);
+                    var status = res.status;
+                    if (status) {
+                        messenger.update({
+                            message: '删除成功',
+                            hideAfter: 3,
+                            type: 'success'
+                        });
+                        setTimeout(function() {
+                            $this.closest('tr').remove();
+                        }, 1000)
+                        
+                    } else {
+                        messenger.update({
+                            message: '删除失败',
+                            hideAfter: 3,
+                            type: 'error'
+                        });
+                    }
+                })
+            })
+        })
