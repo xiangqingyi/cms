@@ -30,11 +30,19 @@ let UserSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Role'
     }],
-    count: {
+    count: {  // 惩罚的次数
         type: Number,
         default: 0
     },
     fined: {
+      type: Number,
+      default: 0
+    },
+    awardcount: {     // 奖励的次数
+      type: Number,
+      default: 0
+    },
+    award: {
       type: Number,
       default: 0
     },
