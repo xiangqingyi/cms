@@ -36,7 +36,6 @@ html.no-js
                 .brand
                     a.logo(href='#{adminDir}')
                         | 每日正能量
-                        //| 实验室
                 // logo end
                 .toggle-navigation.toggle-left
                     button#toggle-left.btn.btn-default(type='button', data-toggle='tooltip', data-placement='right', title='切换左栏')
@@ -79,6 +78,18 @@ html.no-js
                                         a(href='#{adminDir}/punishment') 惩罚列表
                                     li(class=Menu === 'add' ? 'active' : '')
                                         a(href='#{adminDir}/punishment/add') 添加惩罚
+                        //- 只有值日生有权限查看奖励列表
+                        if (User && ((User.status === 101) && (User.isduty))) 
+                            li.sub-menu(class=Path === 'award' ? 'active' : '')
+                                a(href='javascript:void(0);')
+                                    i.fa.fa-unlock-alt
+                                    span 奖励
+                                    i.arrow.fa.fa-angle-right.pull-right
+                                ul
+                                    li(class=Menu === 'list' ? 'active' : '')
+                                        a(href='#{adminDir}/award') 奖励列表
+                                    li(class=Menu === 'add' ? 'active' : '')
+                                        a(href='#{adminDir}/award/add') 添加奖励
                         if (User && (User.status === 101 || Actions.indexOf('USER_INDEX') > -1))
                             li.sub-menu(class=Path === 'user' ? 'active' : '')
                                 a(href='javascript:void(0);')
@@ -105,17 +116,6 @@ html.no-js
                         //-     li(class=Path === 'comment' ? 'active' : '')
                         //-         a(href='#{adminDir}/comment') 评论列表
 
-                        //- if (User && (User.status === 101 || Actions.indexOf('ROLE_INDEX') > -1))
-                        //-     li.sub-menu(class=Path === 'role' ? 'active' : '')
-                        //-         a(href='javascript:void(0);')
-                        //-             i.fa.fa-unlock-alt
-                        //-             span 角色
-                        //-             i.arrow.fa.fa-angle-right.pull-right
-                        //-         ul
-                        //-             li(class=Menu === 'list' ? 'active' : '')
-                        //-                 a(href='#{adminDir}/role') 角色列表
-                        //-             li(class=Menu === 'add' ? 'active' : '')
-                        //-                 a(href='#{adminDir}/role/add') 添加角色
                         //- if (User && User.status === 101 || Actions.indexOf('MESSAGE_INDEX') > -1)
                         //-     li(class=Menu === 'list' ? 'active' : '')
                         //-         a(href='#{adminDir}/message') 留言列表
