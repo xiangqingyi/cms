@@ -1,0 +1,18 @@
+{
+  "name": "cms",
+  "description": "",
+  "main": "",
+  "authors": [
+    "xiangqingyi <1352493573@qq.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/xiangqingyi/cms",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/assets/plugins",
+    "test",
+    "tests"
+  ]
+}
